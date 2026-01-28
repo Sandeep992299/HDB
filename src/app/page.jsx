@@ -7,6 +7,7 @@ import IntroScreen from "@/components/screens/IntroScreen"
 import CakeScreen from "@/components/screens/CakeScreen"
 import PhotosScreen from "@/components/screens/PhotosScreen"
 import MessageScreen from "@/components/screens/MessageScreen"
+import PopBaloons from "@/components/screens/PopBaloons"
 
 export default function HomePage() {
   const [currentScreen, setCurrentScreen] = useState(0)
@@ -16,6 +17,7 @@ export default function HomePage() {
     <IntroScreen key="intro" onNext={() => setCurrentScreen(2)} />,
     <CakeScreen key="cake" onNext={() => setCurrentScreen(3)} />,
     <PhotosScreen key="photos" onNext={() => setCurrentScreen(4)} />,
+    <PopBaloons key="balloons" onNext={() => setCurrentScreen(5)} />,
     <MessageScreen key="message" />,
   ]
 
