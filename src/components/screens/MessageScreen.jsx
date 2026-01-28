@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import confetti from "canvas-confetti"
 
 export default function MessageScreen() {
@@ -16,10 +16,10 @@ export default function MessageScreen() {
                 audioRef.current.play().catch(err => console.log("Audio play blocked"));
             }
 
-            // 2. Continuous Party Pops
+            // 2. Continuous Party Pops (Confetti)
             const duration = 5 * 1000;
             const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 50 };
 
             const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
@@ -41,7 +41,7 @@ export default function MessageScreen() {
                 <source src="images/happy-birthday-469282.mp3" type="audio/mpeg" />
             </audio>
 
-            {/* GIF APPEARING ABOVE THE BOX */}
+            {/* GIF ABOVE THE BOX */}
             <div className={`transition-all duration-1000 transform ${opened ? "opacity-100 translate-y-0 scale-110" : "opacity-0 translate-y-10 scale-50 pointer-events-none"}`}>
                 <img 
                     src="https://raw.githubusercontent.com/Sandeep992299/HDB/main/public/gifs/surprise.gif" 
@@ -50,20 +50,20 @@ export default function MessageScreen() {
                 />
             </div>
 
-            <div className={`bg-[#fff8fc] p-8 rounded-[60px] drop-shadow-2xl w-full max-w-lg relative flex flex-col items-center gap-6 my-6 transition-all duration-500 ${opened ? "mt-2" : "mt-10"}`}>
+            <div className={`bg-[#fff8fc] p-8 rounded-[60px] drop-shadow-2xl w-full max-w-lg relative flex flex-col items-center gap-6 transition-all duration-500 ${opened ? "mt-2" : "mt-10"}`}>
                 <div className="text-center">
                     <h2 className="text-3xl md:text-5xl font-extrabold text-[#ff4d6d] text-center animate-bounce">
                         {opened ? "Surprise! 🎉" : "A Special Message"}
                     </h2>
                     <p className="text-pink-400 text-lg font-semibold mt-2">
-                        {opened ? "For My Favorite Person ❤️" : "Tap the heart to open"}
+                        {opened ? "Keep scrolling to read... ❤️" : "Tap the heart to open"}
                     </p>
                 </div>
 
-                {/* The Interactive Box (Made Larger) */}
+                {/* The Interactive Box */}
                 <div
                     onClick={handleOpen}
-                    className={`relative h-96 w-full rounded-[50px] overflow-hidden shadow-2xl cursor-pointer transition-all duration-700 transform ${opened ? 'scale-105' : 'hover:scale-102'} bg-white flex items-center justify-center`}
+                    className={`relative h-[450px] w-full rounded-[50px] overflow-hidden shadow-2xl cursor-pointer transition-all duration-700 transform ${opened ? 'scale-105' : 'hover:scale-102'} bg-white flex flex-col items-center justify-center`}
                 >
                     {/* COVER IMAGE */}
                     <div 
@@ -79,18 +79,36 @@ export default function MessageScreen() {
                         </div>
                     </div>
 
-                    {/* BIGGER MESSAGE CONTENT */}
-                    <div className={`relative px-10 py-8 h-full flex flex-col items-center justify-center text-center transition-all duration-1000 ${opened ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}>
-                        <div className="text-6xl mb-4">🎂</div>
-                        <p className="text-gray-700 text-xl md:text-2xl leading-relaxed font-bold italic">
-                            Happy Birthday, <span className="text-[#ff4d6d]">Cutiepie!</span>
-                        </p>
-                        <p className="text-gray-600 text-lg md:text-xl mt-4 leading-relaxed font-medium">
-                            You deserve all the happiness, love, and smiles in the world. 
-                            You make everything brighter just by being you. 
-                            I hope your day is filled with laughter and heart-melting moments. 
-                            Keep being amazing! 💗
-                        </p>
+                    {/* SCROLLABLE MESSAGE CONTENT */}
+                    <div className={`relative w-full h-full flex flex-col items-center transition-all duration-1000 ${opened ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+                        
+                        {/* Fixed Top Decoration inside box */}
+                        <div className="pt-8 pb-2 text-6xl">🎂</div>
+
+                        {/* THIS SECTION IS NOW SCROLLABLE */}
+                        <div className="px-10 pb-10 overflow-y-auto w-full custom-scrollbar">
+                            <p className="text-[#ff4d6d] text-2xl md:text-3xl font-bold italic text-center mb-6">
+                                Happy Birthday, Cutiepie!
+                            </p>
+                            
+                            <div className="text-gray-600 text-xl md:text-2xl leading-relaxed font-medium space-y-6 text-center">
+                                <p>
+                                    You deserve all the happiness, love, and smiles in the world today and always. 🌟
+                                </p>
+                                <p>
+                                    You have this special way of making everything around you brighter—your smile, your kindness, and the way you make people feel truly cared for.
+                                </p>
+                                <p>
+                                    I hope your day is filled with laughter, surprises, and moments that make your heart happy. You’re truly one of a kind.
+                                </p>
+                                <p>
+                                    Keep being the amazing person you are, spreading joy wherever you go. Wishing you endless success and all the sweet things life has to offer!
+                                </p>
+                                <p className="text-[#ff4d6d] font-bold text-3xl mt-6">
+                                    I Love You So Much! 💗
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -102,6 +120,23 @@ export default function MessageScreen() {
                     </div>
                 )}
             </div>
+
+            {/* Custom Scrollbar CSS */}
+            <style jsx>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 6px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: #ffccd5;
+                    border-radius: 10px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                    background: #ff4d6d;
+                }
+            `}</style>
         </div>
     )
 }
