@@ -43,7 +43,7 @@ export default function MessageScreen() {
         <div className="flex flex-col items-center justify-center min-h-screen bg-[#ffe4e1] p-4">
             {/* Hidden Audio Element */}
             <audio ref={audioRef} loop>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+                <source src="images/happy-birthday-469282.mp3" type="audio/mpeg" />
                 {/* Note: Replace the URL above with a direct link to your "Happy Birthday" MP3 file */}
             </audio>
 
@@ -80,8 +80,8 @@ export default function MessageScreen() {
                     {/* MESSAGE CONTENT - Appears when opened */}
                     <div className={`relative px-8 py-6 h-full flex flex-col items-center justify-center text-center transition-opacity duration-1000 ${opened ? "opacity-100" : "opacity-0"}`}>
                         <div className="text-4xl mb-4">🎂</div>
-                        <p className="text-gray-700 leading-relaxed font-medium italic">
-                            Happy Birthday, Cutiepie! You deserve all the happiness, love, and smiles in the world today and always. 
+                        <p className="text-gray-600 leading-relaxed font-medium italic">
+                            Happy Birthday, Cutiepie! You deserve all the happiness, love, and smiles in the world always. 
                             You have this special way of making everything around you brighter. 
                             I hope your day is filled with laughter, surprises, and moments that make your heart happy. 
                             Keep being the amazing person you are. 💗
