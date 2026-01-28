@@ -12,7 +12,7 @@ export default function IntroScreen({ onNext }) {
             <div className="relative h-44 md:h-52 bg-linear-to-b from-white/80 to-pink-200 w-full rounded-[40px] flex items-end justify-center shadow-inner">
                 <img
                     loading="lazy"
-                    src="/gifs/intro.gif"
+                    src="gifs/intro.gif"
                     alt="Cute"
                     className="w-26 md:w-32"
                 />
