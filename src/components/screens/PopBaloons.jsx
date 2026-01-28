@@ -10,10 +10,10 @@ const BALLOONS = [
     { id: 4, word: "Patiyo", color: "bg-rose-500" },
 ];
 
-export default function BalloonPage({ onNext }) { // Received onNext prop
+export default function PopBaloons({ onNext }) {
     const [popped, setPopped] = useState([]);
     const [allPopped, setAllPopped] = useState(false);
-    const [showButton, setShowButton] = useState(false); // New state for button delay
+    const [showButton, setShowButton] = useState(false);
 
     const popSound = () => {
         const audio = new Audio("https://www.soundjay.com/buttons/sounds/button-10.mp3");
@@ -25,7 +25,6 @@ export default function BalloonPage({ onNext }) { // Received onNext prop
             popSound();
             setPopped([...popped, id]);
             
-            // Individual balloon pop effect
             confetti({
                 particleCount: 40,
                 spread: 70,
@@ -39,9 +38,7 @@ export default function BalloonPage({ onNext }) { // Received onNext prop
         if (popped.length === BALLOONS.length) {
             setTimeout(() => {
                 setAllPopped(true);
-                
-                // Grand Finale Confetti
-                const end = Date.now() + 3 * 1000;
+                const end = Date.now() + 3000;
                 const colors = ['#ff4d6d', '#ffccd5', '#ffffff'];
                 
                 (function frame() {
@@ -50,7 +47,6 @@ export default function BalloonPage({ onNext }) { // Received onNext prop
                     if (Date.now() < end) {
                         requestAnimationFrame(frame);
                     } else {
-                        // Show the "Next" button after confetti finishes
                         setShowButton(true);
                     }
                 }());
@@ -59,54 +55,57 @@ export default function BalloonPage({ onNext }) { // Received onNext prop
     }, [popped]);
 
     return (
-        <div className="flex flex-col items-center justify-between min-h-screen bg-[#fff0f3] p-6 overflow-hidden">
-            <div className="text-center mt-10">
-                <h2 className="text-3xl md:text-4xl font-bold text-[#ff4d6d] animate-pulse">
+        <div className="flex flex-col items-center justify-between min-h-screen bg-[#fff0f3] p-4 md:p-10 overflow-hidden">
+            <div className="text-center mt-5 md:mt-10">
+                <h2 className="text-2xl md:text-4xl font-bold text-[#ff4d6d] animate-pulse">
                     {allPopped ? "You're my world! 🌎" : "Pop the balloons for a secret! 🎈"}
                 </h2>
             </div>
 
-            {/* Balloon Container */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16 w-full max-w-4xl">
+            {/* BALLOON GRID - Fixed spacing to prevent overlapping */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-10 w-full max-w-5xl justify-items-center items-center my-10">
                 {BALLOONS.map((b, index) => (
-                    <div key={b.id} className="relative flex flex-col items-center">
-                        {/* The Word revealed after popping */}
-                        <div className={`absolute top-10 transition-all duration-500 text-4xl md:text-6xl font-black text-[#ff4d6d] ${popped.includes(b.id) ? "opacity-100 scale-125 translate-y-0" : "opacity-0 scale-50 translate-y-10"}`}>
+                    <div key={b.id} className="relative flex flex-col items-center justify-center w-32 h-48 md:w-40 md:h-60">
+                        
+                        {/* THE WORD - Centered in the balloon's spot */}
+                        <div className={`absolute transition-all duration-700 ease-out text-3xl md:text-5xl font-black text-[#ff4d6d] z-10 text-center
+                            ${popped.includes(b.id) ? "opacity-100 scale-110 translate-y-0" : "opacity-0 scale-0 translate-y-10"}`}>
                             {b.word}
                         </div>
 
-                        {/* The Balloon */}
+                        {/* THE BALLOON */}
                         {!popped.includes(b.id) && (
                             <div
                                 onClick={() => handlePop(b.id)}
                                 className={`w-24 h-32 md:w-32 md:h-44 ${b.color} rounded-t-full rounded-b-[70%] cursor-pointer shadow-xl
-                                           animate-float relative transition-transform hover:scale-110 active:scale-90`}
-                                style={{ animationDelay: `${index * 0.5}s` }}
+                                           animate-float relative transition-transform hover:scale-110 active:scale-95 z-20`}
+                                style={{ animationDelay: `${index * 0.3}s` }}
                             >
                                 {/* Balloon String */}
-                                <div className="absolute -bottom-16 left-1/2 w-0.5 h-16 bg-gray-400/50"></div>
+                                <div className="absolute -bottom-12 md:-bottom-16 left-1/2 w-0.5 h-12 md:h-16 bg-gray-400/40"></div>
                                 {/* Shine Effect */}
-                                <div className="absolute top-4 left-6 w-4 h-8 bg-white/30 rounded-full"></div>
+                                <div className="absolute top-4 left-6 w-3 h-7 bg-white/30 rounded-full"></div>
                             </div>
                         )}
                     </div>
                 ))}
             </div>
 
-            {/* Final Message & Button Container */}
-            <div className="flex flex-col items-center gap-6 mb-20">
+            {/* FINAL MESSAGE & BUTTON */}
+            <div className="flex flex-col items-center gap-6 mb-10 md:mb-20 min-h-[150px]">
                 <div className={`transition-all duration-1000 text-center ${allPopped ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-                    <h1 className="text-5xl md:text-7xl font-extrabold text-[#ff4d6d] drop-shadow-lg">
+                    <h1 className="text-4xl md:text-7xl font-extrabold text-[#ff4d6d] drop-shadow-lg">
                         Forever Yours ❤️
                     </h1>
-                    <p className="text-pink-400 text-xl mt-4 italic font-medium px-4">You are the best thing that ever happened to me.</p>
+                    <p className="text-pink-400 text-lg md:text-xl mt-2 italic font-medium px-4">
+                        You are the best thing that ever happened to me.
+                    </p>
                 </div>
 
-                {/* NEXT BUTTON */}
                 {showButton && (
                     <button
                         onClick={onNext}
-                        className="bg-[#ff4d6d] text-white px-10 py-4 rounded-full font-bold text-2xl shadow-2xl hover:bg-[#ff3355] transition-all transform hover:scale-110 active:scale-95 animate-bounce-slow"
+                        className="bg-[#ff4d6d] text-white px-8 py-3 md:px-10 md:py-4 rounded-full font-bold text-xl md:text-2xl shadow-2xl hover:bg-[#ff3355] transition-all transform hover:scale-105 active:scale-95 animate-bounce-slow"
                     >
                         See More Surprise! ✨
                     </button>
@@ -116,14 +115,14 @@ export default function BalloonPage({ onNext }) { // Received onNext prop
             <style jsx>{`
                 @keyframes float {
                     0%, 100% { transform: translateY(0) rotate(0deg); }
-                    50% { transform: translateY(-20px) rotate(2deg); }
+                    50% { transform: translateY(-15px) rotate(2deg); }
                 }
                 @keyframes bounce-slow {
-                    0%, 100% { transform: translateY(0) scale(1.1); }
-                    50% { transform: translateY(-10px) scale(1.1); }
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-10px); }
                 }
                 .animate-float {
-                    animation: float 3s ease-in-out infinite;
+                    animation: float 3.5s ease-in-out infinite;
                 }
                 .animate-bounce-slow {
                     animation: bounce-slow 2s ease-in-out infinite;
